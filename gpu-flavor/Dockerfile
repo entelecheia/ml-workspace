@@ -7,6 +7,9 @@ ENV WORKSPACE_FLAVOR=$ARG_WORKSPACE_FLAVOR
 
 USER root
 
+# a temporary hack solution
+# add a hook before install ca-certificates
+RUN echo "post-invoke=sed -i 's@exec test@exec /usr/bin/test@g' /usr/sbin/update-ca-certificates" > /etc/dpkg/dpkg.cfg.d/update-ca-certificates
 ### NVIDIA CUDA BASE ###
 # https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/11.0.3/ubuntu18.04-x86_64/base/Dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends gnupg2 curl ca-certificates && \
@@ -81,7 +84,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libnpp-dev-11-0=11.1.0.245-1 \
         libnccl-dev=2.9.6-1+cuda11.0 \
         libcublas-dev-11-0=11.2.0.252-1 \
-        libcusparse-dev-11-0=11.1.1.245-1 \
+        libcusparse-dev-11-0=11.1.1.245-1 && \
     apt-mark hold libnccl-dev && \
     # Cleanup - cannot use cleanup script here, otherwise too much is removed
     apt-get clean && \
