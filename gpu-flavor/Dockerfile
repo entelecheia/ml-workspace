@@ -93,7 +93,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # apt from auto upgrading the cublas package. See https://gitlab.com/nvidia/container-images/cuda/-/issues/88
-RUN apt-mark hold libcublas-dev
+RUN apt-mark hold libcublas-dev-11-0 libnccl-dev
 
 ENV LIBRARY_PATH /usr/local/cuda/lib64/stubs
 
@@ -126,7 +126,7 @@ ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/cuda/extras/CUPTI/lib64
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libnvinfer7=7.1.3-1+cuda11.0 \
         libnvinfer-dev=7.1.3-1+cuda11.0 \
-        libnvinfer-plugin7=7.1.3-1+cuda11.0 \
+        libnvinfer-plugin7=7.1.3-1+cuda11.0 && \
     # Cleanup
     clean-layer.sh
 
